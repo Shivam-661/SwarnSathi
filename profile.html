@@ -15,6 +15,7 @@
         const supabase = createClient(UR, TB);
 
         let userId = null;
+        let userEmail = null;
 
         document.addEventListener("DOMContentLoaded", async () => {
             const { data: { session } } = await supabase.auth.getSession();
