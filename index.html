@@ -2,52 +2,59 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SwarnSathi - Login</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script type="module">
-        import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SwarnSathi - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-        // 🔹 Replace with your Supabase details
-        const UR = "https://pdhxgfxwhlmoryksecwy.supabase.co";
-        const TB = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkaHhnZnh3aGxtb3J5a3NlY3d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1ODg2MDgsImV4cCI6MjA3MzE2NDYwOH0.zniiChPm6xhGmVONODQICOGfnBHEWcPAXbdHl7iOIAQ";
-        const supabase = createClient(UR, TB);
+    // 🔹 Replace with your Supabase details
+    const SUPABASE_URL = "https://pdhxgfxwhlmoryksecwy.supabase.co";
+    const SUPABASE_ANON_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkaHhnZnh3aGxtb3J5a3NlY3d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1ODg2MDgsImV4cCI6MjA3MzE2NDYwOH0.zniiChPm6xhGmVONODQICOGfnBHEWcPAXbdHl7iOIAQ";
 
-        document.addEventListener("DOMContentLoaded", async () => {
-            // If logged in → go to homepage
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                window.location.href = "home.html";
-            }
-        });
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        async function signInWithGoogle() {
-            const { error } = await supabase.auth.signInWithOAuth({
-                provider: "google",
-                options: {
-                    redirectTo: window.location.origin + "/home.html", // redirect after login
-                    queryParams: { access_type: "offline", prompt: "consent" }
-                },
-            });
-            if (error) alert("Login failed: " + error.message);
-        }
+    // ✅ Adjust redirect URL for GitHub Pages repo
+    const redirectUrl = "https://shivam-661.github.io/SwarnSathi/home.html";
 
-        window.signInWithGoogle = signInWithGoogle;
-    </script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      // If already logged in → go to homepage
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        window.location.href = "home.html";
+      }
+    });
+
+    async function signInWithGoogle() {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: redirectUrl,
+          queryParams: { access_type: "offline", prompt: "consent" }
+        },
+      });
+      if (error) {
+        alert("Login failed: " + error.message);
+      }
+    }
+
+    // expose for button click
+    window.signInWithGoogle = signInWithGoogle;
+  </script>
 </head>
 
 <body class="bg-gray-50 flex items-center justify-center min-h-screen font-sans">
-    <div class="w-full max-w-md p-8 bg-white rounded-2xl shadow-md text-center">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">Welcome to SwarnSathi</h1>
-        <p class="text-gray-600 mb-6">Login to continue</p>
-        <button onclick="signInWithGoogle()"
-            class="w-full flex items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-3 rounded-lg shadow-sm transition">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google" />
-            Continue with Google
-        </button>
-    </div>
+  <div class="w-full max-w-md p-8 bg-white rounded-2xl shadow-md text-center">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Welcome to SwarnSathi</h1>
+    <p class="text-gray-600 mb-6">Login to continue</p>
+    <button onclick="signInWithGoogle()"
+      class="w-full flex items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-3 rounded-lg shadow-sm transition">
+      <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google" />
+      Continue with Google
+    </button>
+  </div>
 </body>
 
 </html>
-

@@ -2,96 +2,99 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SwarnSathi - Complete Profile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script type="module">
-        import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SwarnSathi - Complete Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-        // 🔹 Replace with your Supabase project details
-        const UR = "https://pdhxgfxwhlmoryksecwy.supabase.co";
-        const TB = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkaHhnZnh3aGxtb3J5a3NlY3d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1ODg2MDgsImV4cCI6MjA3MzE2NDYwOH0.zniiChPm6xhGmVONODQICOGfnBHEWcPAXbdHl7iOIAQ";
-        const supabase = createClient(UR, TB);
+    // 🔹 Supabase setup
+    const UR = "https://pdhxgfxwhlmoryksecwy.supabase.co";
+    const TB = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkaHhnZnh3aGxtb3J5a3NlY3d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1ODg2MDgsImV4cCI6MjA3MzE2NDYwOH0.zniiChPm6xhGmVONODQICOGfnBHEWcPAXbdHl7iOIAQ";
+    const supabase = createClient(UR, TB);
 
-        document.addEventListener("DOMContentLoaded", async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
-                window.location.href = "index.html";
-                return;
-            }
-            window.userId = session.user.id; // 🔹 store globally
-        });
+    let userId = null;
 
-        async function saveProfile(e) {
-            e.preventDefault();
+    document.addEventListener("DOMContentLoaded", async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        window.location.href = "index.html";
+        return;
+      }
+      userId = session.user.id;
+    });
 
-            const fullName = document.getElementById("fullName").value;
-            const age = document.getElementById("age").value;
-            const gender = document.getElementById("gender").value;
-            const lookingFor = document.getElementById("lookingFor").value;
+    async function saveProfile(e) {
+      e.preventDefault();
 
-            // ✅ Example: upsert into users table (adjust column names to your schema)
-            const { error } = await supabase
-                .from("users")
-                .upsert([
-                    {
-                        a: window.userId,       // FK → Supabase auth user.id
-                        b: fullName,     // map to your table column
-                        c: age,
-                        d: gender,
-                        e: lookingFor,
-                        f: true  // 🔹 mark as completed
-                    }
-                ], { onConflict: "id" }); // update if user already exists
+      const fullName = document.getElementById("fullName").value;
+      const age = document.getElementById("age").value;
+      const gender = document.getElementById("gender").value;
+      const lookingFor = document.getElementById("lookingFor").value;
 
-            if (error) {
-                alert("❌ Error saving profile: " + error.message);
-            } else {
-                alert("✅ Profile saved! You can now access Matrimony.");
-                window.location.href = "home.html";
-            }
-        }
-        window.saveProfile = saveProfile;
-    </script>
+      // ✅ Save profile to Supabase
+      const { error } = await supabase
+        .from("users")
+        .upsert([
+          {
+            a: userId,          // FK → Supabase auth user.id
+            b: fullName,        // full name
+            c: age,             // age
+            d: gender,          // gender
+            e: lookingFor,      // looking for
+            f: true             // mark as profile completed
+          }
+        ], { onConflict: "a" }); // update if user exists by auth user ID
+
+      if (error) {
+        alert("❌ Error saving profile: " + error.message);
+      } else {
+        alert("✅ Profile saved successfully!");
+        window.location.href = "home.html";
+      }
+    }
+
+    window.saveProfile = saveProfile;
+  </script>
 </head>
 
 <body class="bg-gray-50 flex items-center justify-center min-h-screen">
-    <form onsubmit="saveProfile(event)" class="bg-white p-8 rounded-2xl shadow-md w-full max-w-lg">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Complete Your Profile</h2>
+  <form onsubmit="saveProfile(event)" class="bg-white p-8 rounded-2xl shadow-md w-full max-w-lg">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Complete Your Profile</h2>
 
-        <div class="mb-4">
-            <label class="block text-gray-700 mb-1">Full Name</label>
-            <input id="fullName" type="text" required
-                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
-        </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-1">Full Name</label>
+      <input id="fullName" type="text" required
+        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+    </div>
 
-        <div class="mb-4">
-            <label class="block text-gray-700 mb-1">Age</label>
-            <input id="age" type="number" required
-                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
-        </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-1">Age</label>
+      <input id="age" type="number" required
+        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+    </div>
 
-        <div class="mb-4">
-            <label class="block text-gray-700 mb-1">Gender</label>
-            <select id="gender" required
-                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200">
-                <option value="">Select</option>
-                <option>Male</option>
-                <option>Female</option>
-            </select>
-        </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-1">Gender</label>
+      <select id="gender" required
+        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200">
+        <option value="">Select</option>
+        <option>Male</option>
+        <option>Female</option>
+      </select>
+    </div>
 
-        <div class="mb-6">
-            <label class="block text-gray-700 mb-1">Looking For</label>
-            <input id="lookingFor" type="text" required
-                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
-        </div>
+    <div class="mb-6">
+      <label class="block text-gray-700 mb-1">Looking For</label>
+      <input id="lookingFor" type="text" required
+        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+    </div>
 
-        <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-lg">
-            Save & Continue
-        </button>
-    </form>
+    <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-lg">
+      Save & Continue
+    </button>
+  </form>
 </body>
 
 </html>
