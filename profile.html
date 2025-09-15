@@ -26,8 +26,8 @@
             userEmail = session.user.email;
         });
 
-        async function saveProfile(e) {
-            e.preventDefault();
+        async function saveProfile(e1) {
+            e1.preventDefault();
 
             const b = document.getElementById("b").value;
             const c = document.getElementById("c").value;
@@ -158,7 +158,7 @@
                         // ai: ai,      // looking for
                         // aj: aj,      // looking for
                     }
-                ], { onConflict: "a" }); // update if user exists by auth user ID
+                ], { onConflict: "id" }); // update if user exists by auth user ID
 
             if (error) {
                 alert("❌ Error saving profile: " + error.message);
