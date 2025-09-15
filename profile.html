@@ -30,6 +30,8 @@
         async function saveProfile(e1) {
             e1.preventDefault();
 
+            const a = userId;
+            const d = userEmail;
             const now = new Date().toISOString();
             const b = document.getElementById("b").value;
             const c = document.getElementById("c").value;
@@ -97,10 +99,10 @@
                 .from("users")
                 .upsert([
                     {
-                        a: userId,          // FK → Supabase auth user.id
+                        a: a,          // FK → Supabase auth user.id
                         b: b,        // full name
                         c: c,             // age
-                        d: userEmail,          // gender
+                        d: d,          // gender
                         e: e,      // looking for
                         f: f,      // looking for
                         g: g,      // looking for
