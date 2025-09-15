@@ -15,29 +15,25 @@
 
         document.addEventListener("DOMContentLoaded", async () => {
             const { data: { session } } = await supabase.auth.getSession();
-
             if (!session) {
-                window.location.href = "index.html"; // not logged in → back to login
+                window.location.href = "index.html";
                 return;
             }
 
-            // Show user info
             document.getElementById("user-email").textContent = session.user.email;
 
-            // ⏳ Auto logout after 3 hours (10800s)
-            const expiresAt = session.expires_at * 1000;
-            const now = Date.now();
-            const remaining = expiresAt - now;
-
-            if (remaining > 0) {
-                setTimeout(async () => {
-                    alert("⏳ Session expired. Please log in again.");
-                    await supabase.auth.signOut();
-                    window.location.href = "index.html";
-                }, remaining);
+            // ✅ Check if profile is completed (dummy check from localStorage for now)
+            const profileCompleted = localStorage.getItem("profileCompleted") === "true";
+            if (!profileCompleted) {
+                document.getElementById("matrimony-lock").classList.remove("hidden");
+                document.getElementById("matrimony-btn").onclick = () => {
+                    window.location.href = "profile.html"; // redirect to profile completion
+                };
             } else {
-                await supabase.auth.signOut();
-                window.location.href = "index.html";
+                document.getElementById("matrimony-lock").classList.add("hidden");
+                document.getElementById("matrimony-btn").onclick = () => {
+                    alert("✅ Welcome to Matrimony Section!");
+                };
             }
         });
 
@@ -45,19 +41,61 @@
             await supabase.auth.signOut();
             window.location.href = "index.html";
         }
-
         window.signOut = signOut;
     </script>
 </head>
 
-<body class="bg-gray-50 flex items-center justify-center min-h-screen font-sans">
-    <div class="w-full max-w-lg p-8 bg-white rounded-2xl shadow-md text-center">
-        <h1 class="text-2xl font-bold text-gray-800 mb-4">🏠 SwarnSathi Homepage</h1>
-        <p class="text-gray-600 mb-6">Welcome, <span id="user-email" class="font-medium"></span></p>
-        <button onclick="signOut()" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg transition">
-            Logout
-        </button>
-    </div>
+<body class="bg-gray-50 font-sans">
+    <!-- Navbar -->
+    <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-gray-800">💍 SwarnSathi</h1>
+            <div class="flex items-center gap-4">
+                <span class="text-gray-600 text-sm" id="user-email"></span>
+                <button onclick="signOut()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-pink-100 to-yellow-100 py-16 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Welcome to SwarnSathi</h2>
+        <p class="text-gray-600 max-w-xl mx-auto">One platform for trusted jewellery shopping and finding your life
+            partner.</p>
+    </section>
+
+    <!-- Features Section -->
+    <section class="max-w-6xl mx-auto px-6 py-12 grid md:grid-cols-2 gap-8">
+
+        <!-- Jewellery -->
+        <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+            <img src="https://www.svgrepo.com/show/522192/diamond.svg" class="w-16 h-16 mb-4" alt="Jewellery">
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Jewellery Business</h3>
+            <p class="text-gray-600 mb-4">Browse, explore, and buy premium jewellery from trusted vendors.</p>
+            <button onclick="alert('✅ Welcome to Jewellery Section!')"
+                class="bg-yellow-500 text-white px-5 py-2 rounded-lg hover:bg-yellow-600">
+                Explore Jewellery
+            </button>
+        </div>
+
+        <!-- Matrimony -->
+        <div class="bg-white p-8 rounded-2xl shadow hover:shadow-lg transition relative">
+            <img src="https://www.svgrepo.com/show/522045/wedding-rings.svg" class="w-16 h-16 mb-4" alt="Matrimony">
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">Matrimony</h3>
+            <p class="text-gray-600 mb-4">Find your perfect match. Complete your profile to get started.</p>
+            <button id="matrimony-btn" class="bg-pink-500 text-white px-5 py-2 rounded-lg hover:bg-pink-600">
+                Enter Matrimony
+            </button>
+
+            <!-- Lock Icon -->
+            <div id="matrimony-lock" class="absolute top-4 right-4 bg-red-100 text-red-500 p-2 rounded-full hidden">
+                🔒
+            </div>
+        </div>
+
+    </section>
 </body>
 
 </html>
