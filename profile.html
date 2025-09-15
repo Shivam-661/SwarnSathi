@@ -2,99 +2,571 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SwarnSathi - Complete Profile</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script type="module">
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SwarnSathi - Complete Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+        import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    // 🔹 Supabase setup
-    const UR = "https://pdhxgfxwhlmoryksecwy.supabase.co";
-    const TB = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkaHhnZnh3aGxtb3J5a3NlY3d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1ODg2MDgsImV4cCI6MjA3MzE2NDYwOH0.zniiChPm6xhGmVONODQICOGfnBHEWcPAXbdHl7iOIAQ";
-    const supabase = createClient(UR, TB);
+        // 🔹 Supabase setup
+        const UR = "https://pdhxgfxwhlmoryksecwy.supabase.co";
+        const TB = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkaHhnZnh3aGxtb3J5a3NlY3d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1ODg2MDgsImV4cCI6MjA3MzE2NDYwOH0.zniiChPm6xhGmVONODQICOGfnBHEWcPAXbdHl7iOIAQ";
+        const supabase = createClient(UR, TB);
 
-    let userId = null;
+        let userId = null;
 
-    document.addEventListener("DOMContentLoaded", async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        window.location.href = "index.html";
-        return;
-      }
-      userId = session.user.id;
-    });
+        document.addEventListener("DOMContentLoaded", async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                window.location.href = "index.html";
+                return;
+            }
+            userId = session.user.id;
+            userEmail = session.user.email;
+        });
 
-    async function saveProfile(e) {
-      e.preventDefault();
+        async function saveProfile(e) {
+            e.preventDefault();
 
-      const fullName = document.getElementById("fullName").value;
-      const age = document.getElementById("age").value;
-      const gender = document.getElementById("gender").value;
-      const lookingFor = document.getElementById("lookingFor").value;
+            const b = document.getElementById("b").value;
+            const c = document.getElementById("c").value;
+            //   const d = document.getElementById("d").value;
+            const e = document.getElementById("e").value;
+            const f = document.getElementById("f").value;
+            const g = document.getElementById("g").value;
+            const h = document.getElementById("h").value;
+            const i = document.getElementById("i").value;
+            const j = document.getElementById("j").value;
+            const k = document.getElementById("k").value;
+            const l = document.getElementById("l").value;
+            const m = document.getElementById("m").value;
+            const n = document.getElementById("n").value;
+            const o = document.getElementById("o").value;
+            //   const p = document.getElementById("p").value;
+            const q = document.getElementById("q").value;
+            const r = document.getElementById("r").value;
+            const s = document.getElementById("s").value;
+            const t = document.getElementById("t").value;
+            const u = document.getElementById("u").value;
+            const v = document.getElementById("v").value;
+            const w = document.getElementById("w").value;
+            const x = document.getElementById("x").value;
+            const y = document.getElementById("y").value;
+            const z = document.getElementById("z").value;
+            const A = document.getElementById("A").value;
+            const B = document.getElementById("B").value;
+            const C = document.getElementById("C").value;
+            const D = document.getElementById("D").value;
+            const E = document.getElementById("E").value;
+            const F = document.getElementById("F").value;
+            const G = document.getElementById("G").value;
+            const H = document.getElementById("H").value;
+            const I = document.getElementById("I").value;
+            const J = document.getElementById("J").value;
+            const K = document.getElementById("K").value;
+            const L = document.getElementById("L").value;
+            const M = document.getElementById("M").value;
+            const N = document.getElementById("N").value;
+            const O = document.getElementById("O").value;
+            const P = document.getElementById("P").value;
+            const Q = document.getElementById("Q").value;
+            const R = document.getElementById("R").value;
+            const S = document.getElementById("S").value;
+            const T = document.getElementById("T").value;
+            const U = document.getElementById("U").value;
+            const V = document.getElementById("V").value;
+            const W = document.getElementById("W").value;
+            const X = document.getElementById("X").value;
+            const Y = document.getElementById("Y").value;
+            const Z = document.getElementById("Z").value;
+            const aa = document.getElementById("aa").value;
+            //   const ab = document.getElementById("ab").value;
+            //   const ac = document.getElementById("ac").value;
+            //   const ad = document.getElementById("ad").value;
+            const ae = document.getElementById("ae").value;
+            //   const af = document.getElementById("af").value;
+            //   const ag = document.getElementById("ag").value;
+            //   const ah = document.getElementById("ah").value;
+            //   const ai = document.getElementById("ai").value;
 
-      // ✅ Save profile to Supabase
-      const { error } = await supabase
-        .from("users")
-        .upsert([
-          {
-            a: userId,          // FK → Supabase auth user.id
-            b: fullName,        // full name
-            c: age,             // age
-            d: gender,          // gender
-            e: lookingFor,      // looking for
-            f: true             // mark as profile completed
-          }
-        ], { onConflict: "a" }); // update if user exists by auth user ID
+            // ✅ Save profile to Supabase
+            const { error } = await supabase
+                .from("users")
+                .upsert([
+                    {
+                        a: userId,          // FK → Supabase auth user.id
+                        b: b,        // full name
+                        c: c,             // age
+                        d: userEmail,          // gender
+                        e: e,      // looking for
+                        f: f,      // looking for
+                        g: g,      // looking for
+                        // h: h,      // looking for
+                        i: i,      // looking for
+                        j: j,      // looking for
+                        k: k,      // looking for
+                        l: l,      // looking for
+                        m: m,      // looking for
+                        n: n,      // looking for
+                        o: o,      // looking for
+                        // p: p,      // looking for
+                        q: q,      // looking for
+                        r: r,      // looking for
+                        s: s,      // looking for
+                        t: t,      // looking for
+                        u: u,      // looking for
+                        v: v,      // looking for
+                        w: w,      // looking for
+                        x: x,      // looking for
+                        y: y,      // looking for
+                        z: z,      // looking for
+                        A: A,      // looking for
+                        B: B,      // looking for
+                        C: C,      // looking for
+                        D: D,      // looking for
+                        E: E,      // looking for
+                        F: F,      // looking for
+                        G: G,      // looking for
+                        H: H,      // looking for
+                        I: I,      // looking for
+                        J: J,      // looking for
+                        K: K,      // looking for
+                        L: L,      // looking for
+                        M: M,      // looking for
+                        N: N,      // looking for
+                        O: O,      // looking for
+                        P: P,      // looking for
+                        Q: Q,      // looking for
+                        R: R,      // looking for
+                        S: S,      // looking for
+                        T: T,      // looking for
+                        U: U,      // looking for
+                        V: V,      // looking for
+                        W: W,      // looking for
+                        X: X,      // looking for
+                        Y: Y,      // looking for
+                        A: Z,      // looking for
+                        aa: aa,      // looking for
+                        ab: now,                // ✅ Created At
+                        ac: now,                // ✅ Updated At
+                        ad: "d",       // ✅ Profile Status
+                        ae: ae,      // looking for
+                        // af: af,      // looking for
+                        // ag: ag,      // looking for
+                        // ah: ah,      // looking for
+                        // ai: ai,      // looking for
+                        // aj: aj,      // looking for
+                    }
+                ], { onConflict: "a" }); // update if user exists by auth user ID
 
-      if (error) {
-        alert("❌ Error saving profile: " + error.message);
-      } else {
-        alert("✅ Profile saved successfully!");
-        window.location.href = "home.html";
-      }
-    }
+            if (error) {
+                alert("❌ Error saving profile: " + error.message);
+            } else {
+                alert("✅ Profile saved successfully!");
+                window.location.href = "home.html";
+            }
+        }
 
-    window.saveProfile = saveProfile;
-  </script>
+        window.saveProfile = saveProfile;
+    </script>
 </head>
 
 <body class="bg-gray-50 flex items-center justify-center min-h-screen">
-  <form onsubmit="saveProfile(event)" class="bg-white p-8 rounded-2xl shadow-md w-full max-w-lg">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Complete Your Profile</h2>
+    <form onsubmit="saveProfile(event)" class="bg-white p-8 rounded-2xl shadow-md w-full max-w-lg">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Complete Your Profile</h2>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Full Name</label>
+            <input id="b" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Phone</label>
+            <input id="c" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <!-- <div class="mb-4">
+      <label class="block text-gray-700 mb-1">Full Name</label>
+      <input id="d" type="text" required
+        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+    </div> -->
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Gender</label>
+            <select id="e" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200">
+                <option value="">Select</option>
+                <option value="m">Male</option>
+                <option value="f">Female</option>
+                <option value="o">Other</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Date Of Birth and Time</label>
+            <input type="datetime-local" id="f" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Birth Place</label>
+            <input id="g" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <!-- <div class="mb-4">
+      <label class="block text-gray-700 mb-1">Full Name</label>
+      <input id="h" type="text" required
+        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+    </div> -->
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Photo Url</label>
+            <input id="i" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Address</label>
+            <input id="j" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Ward No</label>
+            <input id="k" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Village</label>
+            <input id="l" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">City</label>
+            <input id="m" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">State</label>
+            <input id="n" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Pincode</label>
+            <input id="o" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <!-- <div class="mb-4">
+      <label class="block text-gray-700 mb-1">Religion</label>
+      <input id="p" type="text" required
+        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+    </div> -->
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Caste</label>
+            <input id="q" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Sub Caste</label>
+            <input id="r" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Mothers Name</label>
+            <input id="s" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Mothers Occupation</label>
+            <input id="t" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Mothers Income</label>
+            <input id="u" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Mothers Gotra</label>
+            <input id="v" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Fathers Name</label>
+            <input id="w" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Fathers Occupation</label>
+            <input id="x" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Fathers Income</label>
+            <input id="y" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Fathers Gotra</label>
+            <input id="z" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">No of Married Brothers</label>
+            <input id="A" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">No of Married Sisters</label>
+            <input id="B" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">No of Unmarried Brothers</label>
+            <input id="C" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">No of Unmarried Sisters</label>
+            <input id="D" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Drinking Habit</label>
+            <select id="E" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200">
+                <option value="">Select</option>
+                <option value="y">Yes</option>
+                <option value="n">No</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Smoking Habit</label>
+            <select id="F" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200">
+                <option value="">Select</option>
+                <option value="y">Yes</option>
+                <option value="n">No</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Height</label>
+            <input id="G" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Weight</label>
+            <input id="H" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">10th Year of Passing</label>
+            <input id="I" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">10th Percentage</label>
+            <input id="J" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">12th Year of Passing</label>
+            <input id="K" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">12th Subject</label>
+            <input id="L" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">12th Percentage</label>
+            <input id="M" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Bachelor Degree Year of Passing</label>
+            <input id="N" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Bachelor Degree Subject</label>
+            <input id="O" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Bachelor Degree CGPA</label>
+            <input id="P" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Master's Degree Year of Passing</label>
+            <input id="Q" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Master's Degree Subject</label>
+            <input id="R" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Master's Degree CGPA</label>
+            <input id="S" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">PhD Year of Passing</label>
+            <input id="T" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">PhD Subject</label>
+            <input id="U" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">PhD CGPA</label>
+            <input id="V" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Occupation</label>
+            <input id="W" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Work Place</label>
+            <input id="X" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Annual Income</label>
+            <input id="Y" type="number" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Marital Status</label>
+            <select id="Z" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200">
+                <option value="">Select</option>
+                <option value="u">Unmarried</option>
+                <option value="m">Married(Looking Profile for Relative)</option>
+                <option value="d">Divorced/Separated</option>
+                <option value="w">Widow/Widower</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Bio/Requirement</label>
+            <input id="aa" type="text" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+        </div>
+
+        <!-- <div class="mb-4">
+      <label class="block text-gray-700 mb-1">Full Name</label>
+      <input id="ab" type="text" required
+        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+    </div>
 
     <div class="mb-4">
       <label class="block text-gray-700 mb-1">Full Name</label>
-      <input id="fullName" type="text" required
+      <input id="ac" type="text" required
         class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
     </div>
 
     <div class="mb-4">
-      <label class="block text-gray-700 mb-1">Age</label>
-      <input id="age" type="number" required
+      <label class="block text-gray-700 mb-1">Full Name</label>
+      <input id="ad" type="text" required
+        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+    </div> -->
+
+        <div class="mb-4">
+            <label class="block text-gray-700 mb-1">Profile Visibility</label>
+            <select id="ae" required
+                class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200">
+                <option value="">Select</option>
+                <option value="a">Public</option>
+                <option value="p">Private</option>
+            </select>
+        </div>
+
+        <!-- <div class="mb-4">
+      <label class="block text-gray-700 mb-1">Full Name</label>
+      <input id="af" type="text" required
         class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
     </div>
 
     <div class="mb-4">
-      <label class="block text-gray-700 mb-1">Gender</label>
-      <select id="gender" required
-        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200">
-        <option value="">Select</option>
-        <option>Male</option>
-        <option>Female</option>
-      </select>
-    </div>
-
-    <div class="mb-6">
-      <label class="block text-gray-700 mb-1">Looking For</label>
-      <input id="lookingFor" type="text" required
+      <label class="block text-gray-700 mb-1">Full Name</label>
+      <input id="ag" type="text" required
         class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
     </div>
 
-    <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-lg">
-      Save & Continue
-    </button>
-  </form>
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-1">Full Name</label>
+      <input id="ah" type="text" required
+        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+    </div>
+
+    <div class="mb-4">
+      <label class="block text-gray-700 mb-1">Full Name</label>
+      <input id="ai" type="text" required
+        class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
+    </div> -->
+
+
+
+
+
+        <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-lg">
+            Save & Continue
+        </button>
+    </form>
 </body>
 
 </html>
