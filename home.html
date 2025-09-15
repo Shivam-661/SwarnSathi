@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SwarnSathi - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module">
+        import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+        const UR = "https://pdhxgfxwhlmoryksecwy.supabase.co";
+        const TB = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkaHhnZnh3aGxtb3J5a3NlY3d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1ODg2MDgsImV4cCI6MjA3MzE2NDYwOH0.zniiChPm6xhGmVONODQICOGfnBHEWcPAXbdHl7iOIAQ";
+        const supabase = createClient(UR, TB);
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+
+            if (!session) {
+                window.location.href = "index.html"; // not logged in → back to login
+                return;
+            }
+
+            // Show user info
+            document.getElementById("user-email").textContent = session.user.email;
+
+            // ⏳ Auto logout after 3 hours (10800s)
+            const expiresAt = session.expires_at * 1000;
+            const now = Date.now();
+            const remaining = expiresAt - now;
+
+            if (remaining > 0) {
+                setTimeout(async () => {
+                    alert("⏳ Session expired. Please log in again.");
+                    await supabase.auth.signOut();
+                    window.location.href = "index.html";
+                }, remaining);
+            } else {
+                await supabase.auth.signOut();
+                window.location.href = "index.html";
+            }
+        });
+
+        async function signOut() {
+            await supabase.auth.signOut();
+            window.location.href = "index.html";
+        }
+
+        window.signOut = signOut;
+    </script>
+</head>
+
+<body class="bg-gray-50 flex items-center justify-center min-h-screen font-sans">
+    <div class="w-full max-w-lg p-8 bg-white rounded-2xl shadow-md text-center">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4">🏠 SwarnSathi Homepage</h1>
+        <p class="text-gray-600 mb-6">Welcome, <span id="user-email" class="font-medium"></span></p>
+        <button onclick="signOut()" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg transition">
+            Logout
+        </button>
+    </div>
+</body>
+
+</html>

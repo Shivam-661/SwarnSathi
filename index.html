@@ -10,69 +10,42 @@
         import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
         // 🔹 Replace with your Supabase details
-        const SUPABASE_URL = "https://pdhxgfxwhlmoryksecwy.supabase.co";
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkaHhnZnh3aGxtb3J5a3NlY3d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1ODg2MDgsImV4cCI6MjA3MzE2NDYwOH0.zniiChPm6xhGmVONODQICOGfnBHEWcPAXbdHl7iOIAQ";
-
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const UR = "https://pdhxgfxwhlmoryksecwy.supabase.co";
+        const TB = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBkaHhnZnh3aGxtb3J5a3NlY3d5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc1ODg2MDgsImV4cCI6MjA3MzE2NDYwOH0.zniiChPm6xhGmVONODQICOGfnBHEWcPAXbdHl7iOIAQ";
+        const supabase = createClient(UR, TB);
 
         document.addEventListener("DOMContentLoaded", async () => {
-            // Check if already logged in
+            // If logged in → go to homepage
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
-                document.getElementById("login-box").classList.add("hidden");
-                document.getElementById("welcome-box").classList.remove("hidden");
-                document.getElementById("user-email").textContent = session.user.email;
+                window.location.href = "home.html";
             }
         });
 
         async function signInWithGoogle() {
-            const { data, error } = await supabase.auth.signInWithOAuth({
+            const { error } = await supabase.auth.signInWithOAuth({
                 provider: "google",
                 options: {
-                    redirectTo: window.location.href,
-                    scopes: "profile email",
-                    // ⏳ Set session to 3 hours (10800s)
+                    redirectTo: window.location.origin + "/home.html", // redirect after login
                     queryParams: { access_type: "offline", prompt: "consent" }
                 },
             });
-            if (error) {
-                alert("Login failed: " + error.message);
-            }
-        }
-
-        async function signOut() {
-            await supabase.auth.signOut();
-            document.getElementById("login-box").classList.remove("hidden");
-            document.getElementById("welcome-box").classList.add("hidden");
+            if (error) alert("Login failed: " + error.message);
         }
 
         window.signInWithGoogle = signInWithGoogle;
-        window.signOut = signOut;
     </script>
 </head>
 
 <body class="bg-gray-50 flex items-center justify-center min-h-screen font-sans">
     <div class="w-full max-w-md p-8 bg-white rounded-2xl shadow-md text-center">
-        <!-- Login Box -->
-        <div id="login-box">
-            <h1 class="text-2xl font-bold text-gray-800 mb-6">Welcome to SwarnSathi</h1>
-            <p class="text-gray-600 mb-6">Login to continue</p>
-            <button onclick="signInWithGoogle()"
-                class="w-full flex items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-3 rounded-lg shadow-sm transition">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google" />
-                Continue with Google
-            </button>
-        </div>
-
-        <!-- Welcome Box -->
-        <div id="welcome-box" class="hidden">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Welcome back 👋</h2>
-            <p class="text-gray-600 mb-6">Logged in as <span id="user-email" class="font-medium"></span></p>
-            <button onclick="signOut()"
-                class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg transition">
-                Logout
-            </button>
-        </div>
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">Welcome to SwarnSathi</h1>
+        <p class="text-gray-600 mb-6">Login to continue</p>
+        <button onclick="signInWithGoogle()"
+            class="w-full flex items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-3 rounded-lg shadow-sm transition">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google" />
+            Continue with Google
+        </button>
     </div>
 </body>
 
