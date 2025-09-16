@@ -164,7 +164,7 @@
                         // ai: ai,      // looking for
                         // aj: aj,      // looking for
                     }
-                ], { onConflict: "id" }); // update if user exists by auth user ID
+                ], { onConflict: "a" }); // update if user exists by auth user ID
 
             if (error) {
                 alert("❌ Error saving profile: " + error.message);
