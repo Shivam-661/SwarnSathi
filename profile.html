@@ -101,10 +101,10 @@
                 .from("users")
                 .upsert([
                     {
-                        a: a,          // FK → Supabase auth user.id
+                        a: userId,          // FK → Supabase auth user.id
                         b: b,        // full name
                         c: c,             // age
-                        d: d,          // gender
+                        d: userEmail,          // gender
                         e: e,      // looking for
                         f: f,      // looking for
                         g: g,      // looking for
