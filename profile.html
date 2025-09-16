@@ -73,8 +73,8 @@
             const M = document.getElementById("M").value;
             const N = document.getElementById("N").value;
             const O = document.getElementById("O").value;
-            let pValue = document.getElementById("p").value.trim();
-            pValue = pValue ? parseFloat(pValue) : null; // insert NULL if empty
+            let pValue = document.getElementById("p")?.value.trim() || "";
+            pValue = pValue ? parseFloat(pValue) : null;
             const P = pValue;
             const Q = document.getElementById("Q").value;
             const R = document.getElementById("R").value;
@@ -425,7 +425,7 @@
 
         <div class="mb-4">
             <label class="block text-gray-700 mb-1">Bachelor Degree CGPA</label>
-            <input id="P" type="number" required
+            <input id="P" name="P" type="number" required
                 class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
         </div>
 
