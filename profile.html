@@ -73,7 +73,9 @@
             const M = document.getElementById("M").value;
             const N = document.getElementById("N").value;
             const O = document.getElementById("O").value;
-            const P = document.getElementById("P").value;
+            let pValue = document.getElementById("p").value.trim();
+            pValue = pValue ? parseFloat(pValue) : null; // insert NULL if empty
+            const P = pValue;
             const Q = document.getElementById("Q").value;
             const R = document.getElementById("R").value;
             const S = document.getElementById("S").value;
@@ -192,7 +194,7 @@
                 class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
         </div>
 
-    
+
 
         <div class="mb-4">
             <label class="block text-gray-700 mb-1">Gender</label>
@@ -217,7 +219,7 @@
                 class="w-full border border-gray-300 px-3 py-2 rounded-lg focus:ring focus:ring-pink-200" />
         </div>
 
-     
+
 
         <div class="mb-4">
             <label class="block text-gray-700 mb-1">Photo Url</label>
@@ -510,7 +512,7 @@
             </select>
         </div>
 
-    
+
 
 
 
